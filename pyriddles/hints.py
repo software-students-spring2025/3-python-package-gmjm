@@ -1,6 +1,7 @@
 # this will be the file for the hints function
 import pyriddles as pr
 import random
+import re
 
 settings = pr.load_settings()
 
@@ -137,7 +138,7 @@ def revealvowels_hint(solution):
     A function to generate a hint that reveals all the vowels of the solution phrase.
     Ex. "Here are the vowels revealed: _oo___e__"
     """
-    return 0
+    return print ("Here are the vowels revealed: "+ re.sub(r'[^aeiouAEIOU\s]', '_', solution)) # regex replace all except vowels with "_"
 
 def soundsalad_hint(solution):
     """
