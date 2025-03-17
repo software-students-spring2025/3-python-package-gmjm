@@ -5,6 +5,7 @@ import re
 from morse3 import Morse
 import pronouncing
 import emoji
+import ntlk
 
 settings = pr.load_settings()
 
@@ -148,8 +149,14 @@ def soundsalad_hint(solution):
     A function to generate a hint that generates a rhyming word for each word in the solution phrase.
     Ex. "The solution sounds like: Quadriceps"
     """
-    #TODO: exclude stopwords
-    return 0
+    soundsalad = []
+    for word in solution.split():
+        rhymes = pronouncing.rhymes(word)
+        if len(rhymes) > 0: #if rhymes exist
+            soundsalad.append(random.choice(rhymes))
+        else: # if no rhymes
+            soundsalad.append(word) # append word as is
+    return print("The solution sounds like: " + ' '.join(soundsalad))
 
 def emoji_hint(solution):
     """
