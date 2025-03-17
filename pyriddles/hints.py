@@ -88,7 +88,10 @@ def firstletters_hint(riddle_string):
     A function to generate a hint that displays the first letter for every word of the solution phrase.
     Ex. "The first letter(s) of the solution is: F."
     """
-    return 0
+    words = riddle_string.split()
+    firstletters = [word[0] for word in words if word]
+    
+    return print('The first letter(s) of the solution is: ' + ', '.join(firstletters))
 
 def revealrandom_hint(riddle_string):
     """
