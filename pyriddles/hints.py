@@ -66,8 +66,6 @@ def random_hint(solution, hints_list):
         function_list.remove(func)
 
     chosen_func = random.choice(function_list)
-    print("ima finna use "+ str(chosen_func))
-
     if chosen_func == prewritten_hint:
         chosen_func(hints_list)
     else:
@@ -235,7 +233,6 @@ def get_hint(riddle_id, hint_type="auto"):
         riddle_id.update({"hints":[]})
 
     hints_list = riddle_id.get("hints")
-    print(hints_list)
     solution = riddle_id.get("solution")
 
     hint_func = HINT_TYPE_OPTIONS.get(str(hint_type))
