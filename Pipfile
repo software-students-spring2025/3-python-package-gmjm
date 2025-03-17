@@ -7,6 +7,7 @@ name = "pypi"
 morse3 = "*"
 emoji = "*"
 pronouncing = "*"
+nltk = "*"
 
 [dev-packages]
 

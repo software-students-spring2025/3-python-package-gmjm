@@ -5,7 +5,7 @@ import re
 from morse3 import Morse
 import pronouncing
 import emoji
-import ntlk
+import nltk
 
 settings = pr.load_settings()
 
