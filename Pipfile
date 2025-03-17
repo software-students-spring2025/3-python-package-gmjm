@@ -8,6 +8,7 @@ morse3 = "*"
 emoji = "*"
 pronouncing = "*"
 nltk = "*"
+setuptools = "*"
 
 [dev-packages]
 
