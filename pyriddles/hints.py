@@ -5,7 +5,10 @@ import re
 from morse3 import Morse
 import pronouncing
 import emoji
-import nltk
+from nltk.corpus import wordnet
+from nltk.stem import WordNetLemmatizer
+
+lemmatizer = WordNetLemmatizer()
 
 settings = pr.load_settings()
 
@@ -75,7 +78,7 @@ def prewritten_hint(hints_list):
     #TODO: track previously outputted hints so that none is repeated
     # if no hints or it's all run out, then print sorry- no more prewritten hints
     
-    return random.choice(hints_list)
+    return print(random.choice(hints_list))
 
 
 #TODO: maybe: option to toggle hintdescriptions when the solution is printed vs just priting the hint straight up?
@@ -183,9 +186,18 @@ def morse_hint(solution):
 def synonymsalad_hint(solution):
     """
     A function to generate a hint that generates a synonym for each word in the solution phrase.
-    Ex. "Think of an solution similar to: Hoofprints"
+    Ex. "Here's a synonym swap to guide you: Hoofprints"
     """
-    return 0
+    synonymsalad = []
+    for word in solution.split():
+        lemma = lemmatizer.lemmatize(word)
+        synsets = wordnet.synsets(lemma)
+        if synsets:
+            synonym_words = [lemma.name() for syn in synsets for lemma in syn.lemmas()]
+            synonymsalad.append(random.choice(synonym_words))
+        else:
+            synonymsalad.append("[?]")
+    return print("Here's a synonym swap to guide you: " + ' '.join(synonymsalad))
 
 HINT_TYPE_OPTIONS = {
     "auto": random_hint,
