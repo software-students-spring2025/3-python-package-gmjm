@@ -161,7 +161,7 @@ def binary_hint(solution):
     A function to generate a hint that generates the solution phrase in binary code.
     Ex. "Here is the answer in binary code: 01000110 01101111 01101111 01110100 01110000 01110010 01101001 01101110 01110100 01110011"
     """
-    return 0
+    return print("Here is the answer in binary code: " + ' '.join(format(ord(i), '08b') for _ in solution))
 
 def morse_hint(solution):
     """
