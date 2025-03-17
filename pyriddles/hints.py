@@ -1,9 +1,10 @@
 # this will be the file for the hints function
 import pyriddles as pr
+import random
 
 settings = pr.load_settings()
 
-#TODO: logic for getting/parsing riddles whether by ID or otherwise, for now will use fake JSON data
+#TODO: logic for getting/parsing riddles whether by ID or otherwise, for now will use fake data
 
 riddles = {
     1: {
@@ -60,13 +61,19 @@ def random_hint(riddle_string):
     return 0
 
 def prewritten_hint(hints_list):
-    #TODO: if hints is empty or doesn't exist
-
+    """
+    A function to randomly pick a prewritten hint from the riddles' dict.
+    """
+    if hints_list == []:
+        return -1
+    
     #TODO: track previously outputted hints so that none is repeated
-
     # if no hints or it's all run out, then print sorry- no more prewritten hints
+    
+    return random.choice(hints_list)
 
-    return 0
+
+
 
 #TODO: maybe: option to toggle hintdescriptions when the answer is printed vs just priting the hint straight up?
 
@@ -166,6 +173,9 @@ def get_hint(riddle_id, hint_type="auto"):
     Generates a single hint for a riddle.
     """
 
+    if "hints" not in riddle_id:
+        riddle_id.update({"hints":[]})
+
     hints_list = riddle_id.get("hints")
     solution = riddle_id.get("answer")
 
@@ -183,7 +193,7 @@ def get_hint(riddle_id, hint_type="auto"):
         result = hint_func(solution)
     
     if result == -1: # only specific hint type funcs can return -1, random_hint has a diff handling
-        return "Sorry, no more hints are avaiable. Please try another hint type."
+        return "Sorry, no more hints are avaiable for this type. Please try another hint type."
     else:
         pass
 
