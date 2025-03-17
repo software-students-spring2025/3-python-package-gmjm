@@ -2,6 +2,9 @@
 import pyriddles as pr
 import random
 import re
+from morse3 import Morse
+import pronouncing
+import emoji
 
 settings = pr.load_settings()
 
@@ -10,7 +13,7 @@ settings = pr.load_settings()
 riddles = {
     1: {
         "riddle": "What has keys but can't open locks?",
-        "answer": "A piano",
+        "solution": "A piano",
         "hints": [
             "It's a musical instrument.",
             "It plays melodies, not unlocks doors.",
@@ -19,14 +22,14 @@ riddles = {
     },
     2: {
         "riddle": "The more you take, the more you leave behind. What am I?",
-        "answer": "Footsteps",
+        "solution": "Footsteps",
         "hints": [
             "Think about movement and leaving a trail."
         ] 
     },
     3: {
         "riddle": "I have cities, but no houses. I have mountains, but no trees. I have water, but no fish. What am I?",
-        "answer": "A map",
+        "solution": "A map",
         "hints": [
             "It's something you use to navigate.",
             "You might fold me up when traveling."
@@ -34,12 +37,12 @@ riddles = {
     },
     4: {
         "riddle": "What comes once in a minute, twice in a moment, but never in a thousand years?",
-        "answer": "The letter M",
+        "solution": "The letter M",
         # no hints field
     },
     5: {
         "riddle": "What can fill a room but takes up no space?",
-        "answer": "Light",
+        "solution": "Light",
         "hints": [] #empty list
     }
 }
@@ -74,12 +77,12 @@ def prewritten_hint(hints_list):
     return random.choice(hints_list)
 
 
-#TODO: maybe: option to toggle hintdescriptions when the answer is printed vs just priting the hint straight up?
+#TODO: maybe: option to toggle hintdescriptions when the solution is printed vs just priting the hint straight up?
 
 def wordlength_hint(solution):
     """
     A function to generate a hint that displays the number of letters in the solution phrase.
-    Ex. "The answer is n letters long."
+    Ex. "The solution is n letters long."
     """
     wordlength = len(solution.replace(" ", ""))
     return print("The solution is "+str(wordlength)+" letters long.")
@@ -143,7 +146,7 @@ def revealvowels_hint(solution):
 def soundsalad_hint(solution):
     """
     A function to generate a hint that generates a rhyming word for each word in the solution phrase.
-    Ex. "The answer sounds like: Quadriceps"
+    Ex. "The solution sounds like: Quadriceps"
     """
     #TODO: exclude stopwords
     return 0
@@ -151,7 +154,7 @@ def soundsalad_hint(solution):
 def emoji_hint(solution):
     """
     A function to generate a hint that generates an emoji for every word in the solution phrase.
-    Ex. "Here's the answer in emojis: 👣"
+    Ex. "Here's the solution in emojis: 👣"
     """
     
     return 0
@@ -159,21 +162,21 @@ def emoji_hint(solution):
 def binary_hint(solution):
     """
     A function to generate a hint that generates the solution phrase in binary code.
-    Ex. "Here is the answer in binary code: 01000110 01101111 01101111 01110100 01110000 01110010 01101001 01101110 01110100 01110011"
+    Ex. "Here is the solution in binary code: 01000110 01101111 01101111 01110100 01110000 01110010 01101001 01101110 01110100 01110011"
     """
-    return print("Here is the answer in binary code: " + ' '.join(format(ord(i), '08b') for _ in solution))
+    return print("Here is the solution in binary code: " + ' '.join(format(ord(i), '08b') for _ in solution))
 
 def morse_hint(solution):
     """
     A function to generate a hint that generates the solution phrase in binary code.
-    Ex. "Here is the answer in morse code: ..-. --- --- - .--. .-. .. -. - ..."
+    Ex. "Here is the solution in morse code: ..-. --- --- - .--. .-. .. -. - ..."
     """
-    return 0
+    return print("Here is the solution in morse code: "+ Morse(solution).stringToMorse())
 
 def synonymsalad_hint(solution):
     """
     A function to generate a hint that generates a synonym for each word in the solution phrase.
-    Ex. "Think of an answer similar to: Hoofprints"
+    Ex. "Think of an solution similar to: Hoofprints"
     """
     return 0
 
@@ -202,7 +205,7 @@ def get_hint(riddle_id, hint_type="auto"):
         riddle_id.update({"hints":[]})
 
     hints_list = riddle_id.get("hints")
-    solution = riddle_id.get("answer")
+    solution = riddle_id.get("solution")
 
     hint_func = HINT_TYPE_OPTIONS.get(str(hint_type))
 
