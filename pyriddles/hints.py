@@ -1,5 +1,6 @@
 # this will be the file for the hints function
 import pyriddles as pr
+from pyriddles.config import load_settings
 import random
 import re
 from morse3 import Morse
@@ -7,10 +8,11 @@ import pronouncing
 import emoji
 from nltk.corpus import wordnet
 from nltk.stem import WordNetLemmatizer
+import warnings
 
 lemmatizer = WordNetLemmatizer()
 
-settings = pr.load_settings()
+settings = load_settings()
 
 #TODO: logic for getting/parsing riddles whether by ID or otherwise, for now will use fake data
 
@@ -52,20 +54,29 @@ riddles = {
 }
 
 
-    # TODO: if a hint type runs out, the hint type func should return -1
-    #       but for random_hint should return "Sorry, no more hints are available for this riddle."
-    #       or maybe: decide if duplicate/repeated hint responses are ok bc then it'll nvr run out
+def random_hint(solution, hints_list):
 
-def random_hint(solution):
-    #TODO: randomly call one of the hint funcions, active ones only 
-    # so if hint_func not in disabled_hint_types from config.py...
+    function_list = [ prewritten_hint, wordlength_hint, firstletters_hint, revealrandom_hint, wordscramble_hint, revealvowels_hint, 
+                     soundsalad_hint, emoji_hint, binary_hint, morse_hint, synonymsalad_hint ]
+    
+    # remove any disabled types
+    # disabled_hint_types = settings.get("disabled_hint_types")
+    disabled_hint_types = []
+    for func in disabled_hint_types:
+        function_list.remove(func)
 
-    # if the functions return -1, then try another random function - bc this will mean that hint type is not available for this riddle
+    chosen_func = random.choice(function_list)
+    print("ima finna use "+ str(chosen_func))
 
-    # maybe take difficulty param, and only call random hints belonging to set difficulty. or if not, then allow toggle of hard weird hints off
+    if chosen_func == prewritten_hint:
+        chosen_func(hints_list)
+    else:
+        chosen_func(solution)
 
-    # TODO: handle if none of the random hints work- print "Sorry, no more hints are available for this riddle."
-    # TODO: make it so where each hint can only be used once in a session, or set the ones that shouldn't be repeated
+    # result = chosen_func(solution)
+    # if result == -1
+    # or catch any errors
+    # try a diff random func
     return 0
 
 def prewritten_hint(hints_list):
@@ -73,15 +84,13 @@ def prewritten_hint(hints_list):
     A function to randomly pick a prewritten hint from the riddles' dict.
     """
     if hints_list == []:
-        return -1
-    
-    #TODO: track previously outputted hints so that none is repeated
-    # if no hints or it's all run out, then print sorry- no more prewritten hints
-    
+        # raise ValueError("No hints are avaiable for this type. Please try another hint type.")
+        warnings.warn("No more hints are avaiable for this type. Please try another hint type.", UserWarning)
+        return None
     return print(random.choice(hints_list))
 
 
-#TODO: maybe: option to toggle hintdescriptions when the solution is printed vs just priting the hint straight up?
+#TODO: after testing, phase out print statements to actual return values
 
 def wordlength_hint(solution):
     """
@@ -135,6 +144,8 @@ def wordscramble_hint(solution):
         tempchars = list(word)
         shuffled_word = word
         while shuffled_word == word: # shuffle until word is actually scrambled
+            if len(word) == 1:
+                break
             random.shuffle(tempchars) 
             shuffled_word = ''.join(tempchars)
         words[i] = shuffled_word # update word at same index
@@ -174,7 +185,7 @@ def binary_hint(solution):
     A function to generate a hint that generates the solution phrase in binary code.
     Ex. "Here is the solution in binary code: 01000110 01101111 01101111 01110100 01110000 01110010 01101001 01101110 01110100 01110011"
     """
-    return print("Here is the solution in binary code: " + ' '.join(format(ord(i), '08b') for _ in solution))
+    return print("Here is the solution in binary code: " + ' '.join(format(ord(_), '08b') for _ in solution))
 
 def morse_hint(solution):
     """
@@ -224,31 +235,31 @@ def get_hint(riddle_id, hint_type="auto"):
         riddle_id.update({"hints":[]})
 
     hints_list = riddle_id.get("hints")
+    print(hints_list)
     solution = riddle_id.get("solution")
 
     hint_func = HINT_TYPE_OPTIONS.get(str(hint_type))
 
     # if chosen hint_type is disabled
-    disabled_hint_types = settings.get("disabled_hint_types")
+    # disabled_hint_types = settings.get("disabled_hint_types")
+    disabled_hint_types = []
     if hint_func in disabled_hint_types:
-        print("Sorry, no hints are available. Please try another hint type.")
-        return 1
+        raise ValueError("This hint type is disabled. Update your settings to enable it.")
 
-    if hint_type == "prewritten_text":
+    if hint_type == "prewritten_hint":
         result = hint_func(hints_list)
+    elif hint_type == "auto" or "random_hint":
+        result = hint_func(solution, hints_list)
     else:
         result = hint_func(solution)
     
-    if result == -1: # only specific hint type funcs can return -1, random_hint has a diff handling
+    if result == -1: 
         return "Sorry, no more hints are avaiable for this type. Please try another hint type."
     else:
         pass
 
-    # TODO: how to ensure a hint isn't printed twice
 
     return result
-
-# cli wld b like user calles gethint() repeatedly until they're told there's no more 
 
 
 def get_hints(riddle_id, hint_type="auto", limit=10):
@@ -257,3 +268,5 @@ def get_hints(riddle_id, hint_type="auto", limit=10):
     """
     hints_list = [get_hint(riddle_id, hint_type) for _ in range(limit)]
     return hints_list
+
+get_hint(riddles.get(1))
