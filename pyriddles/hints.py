@@ -100,8 +100,7 @@ def revealrandom_hint(solution):
     """
     words = solution.split()
 
-    for word in words:
-        word_index = words.index(word)
+    for i, word in enumerate(words):
         tempchars = list(word)
 
         limit = int(len(word)/2) 
@@ -114,8 +113,8 @@ def revealrandom_hint(solution):
             tempchars[x] = "_"
 
         word = ''.join(tempchars) # rejoin chars to be a word
-        words.insert(word_index, word) # insert updated word at same index
-        
+        words[i] = word # update word at same index
+
     return print("Here are some letters revealed: " + ' '.join(words))
 
 def wordscramble_hint(solution):
@@ -123,7 +122,15 @@ def wordscramble_hint(solution):
     A function to generate a hint that scrambles the letters of the solution phrase.
     Ex. "Here are the letters scrambled: otosFpse"
     """
-    return 0
+    words = solution.split()
+    for i, word in enumerate(words):
+        tempchars = list(word)
+        shuffled_word = word
+        while shuffled_word == word: # shuffle until word is actually scrambled
+            random.shuffle(tempchars) 
+            shuffled_word = ''.join(tempchars)
+        words[i] = shuffled_word # update word at same index
+    return print("Here are the letters scrambled: " + ' '.join(words))
 
 def revealvowels_hint(solution):
     """
