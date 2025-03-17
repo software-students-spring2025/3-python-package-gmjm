@@ -2,7 +2,8 @@
 
 DEFAULT_SETTINGS = { # feel free to add, remove, adjust, etc. these as needed
     "difficulty": "medium",
-    "hint_limit": 3
+    "hint_limit": 3,
+    "disabled_hint_types":[]
 }
 
 # TODO: write function to allow users to optionally create a 'settings.json' file in their app to override the default settings.
