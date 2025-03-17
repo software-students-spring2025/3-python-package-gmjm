@@ -1,0 +1,35 @@
+[build-system] 
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pyriddles"
+description = "A python riddles package."
+version = "0.0.1"
+authors = [
+  { name="Kahmeeah Obey", email="kahmeeah@nyu.edu" },
+  { name="Member 2", email="foo.barstein@onepotcooking.com" },
+  { name="Member 3", email="foo.barstein@onepotcooking.com" },
+  { name="Member 4", email="foo.barstein@onepotcooking.com" }
+]
+license = { file = "LICENSE" }
+readme = "README.md"
+keywords = ["python", "package", "build", "riddles", "fun"]
+requires-python = ">=3.7"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Intended Audience :: Education",
+    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+    "Operating System :: OS Independent",
+]
+
+[project.optional-dependencies]
+dev = ["pytest"]
+
+[project.urls]
+"Homepage" = "https://github.com/software-students-spring2025/3-python-package-gmjm"
+"Repository" = "https://github.com/software-students-spring2025/3-python-package-gmjm.git"
+"Bug Tracker" = "https://github.com/software-students-spring2025/3-python-package-gmjm/issues"
+
+[project.scripts]
+pyriddles = "pyriddles.cli:main"
