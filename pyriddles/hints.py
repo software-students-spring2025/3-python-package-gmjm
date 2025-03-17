@@ -71,6 +71,8 @@ def random_hint(solution, hints_list):
     else:
         chosen_func(solution)
 
+    # handle cases where hint == solution
+
     # result = chosen_func(solution)
     # if result == -1
     # or catch any errors
@@ -236,7 +238,6 @@ def get_hint(riddle_id, hint_type="auto"):
     solution = riddle_id.get("solution")
 
     hint_func = HINT_TYPE_OPTIONS.get(str(hint_type))
-
     # if chosen hint_type is disabled
     # disabled_hint_types = settings.get("disabled_hint_types")
     disabled_hint_types = []
@@ -245,7 +246,7 @@ def get_hint(riddle_id, hint_type="auto"):
 
     if hint_type == "prewritten_hint":
         result = hint_func(hints_list)
-    elif hint_type == "auto" or "random_hint":
+    elif hint_type in ("auto", "random_hint"):
         result = hint_func(solution, hints_list)
     else:
         result = hint_func(solution)
@@ -266,4 +267,5 @@ def get_hints(riddle_id, hint_type="auto", limit=10):
     hints_list = [get_hint(riddle_id, hint_type) for _ in range(limit)]
     return hints_list
 
-get_hint(riddles.get(1))
+# get_hint(riddles.get(4), "soundsalad_hint")
+get_hints(riddles.get(4), "auto")
