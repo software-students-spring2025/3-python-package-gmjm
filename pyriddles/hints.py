@@ -73,19 +73,15 @@ def prewritten_hint(hints_list):
     return random.choice(hints_list)
 
 
-
-
 #TODO: maybe: option to toggle hintdescriptions when the answer is printed vs just priting the hint straight up?
 
 def wordlength_hint(riddle_string):
     """
-    A function to generate a hint that displays the wordcount of the solution phrase.
-    Ex. "The answer is n words long."
+    A function to generate a hint that displays the number of letters in the solution phrase.
+    Ex. "The answer is n letters long."
     """
-
-
-    
-    return 0
+    wordlength = len(riddle_string.replace(" ", ""))
+    return print("The solution is "+str(wordlength)+" letters long.")
 
 def firstletters_hint(riddle_string):
     """
