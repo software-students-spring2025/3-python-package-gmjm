@@ -1,4 +1,7 @@
 # this will be the file for the hints function
+import pyriddles as pr
+
+settings = pr.load_settings()
 
 #TODO: logic for getting/parsing riddles whether by ID or otherwise, for now will use fake JSON data
 
@@ -40,23 +43,9 @@ riddles = {
 }
 
 
-def get_hint(riddle_id, hint_type):
-
-
-    #TODO: get solution from ID and parse it (to string if needed)
-    # solution = solution
-    # call funcs like random_hint(solution)
-    # for prewritten_hint, also get hintslist from ID
-    hints_list = riddle_id.get("hints")
-
-    # TODO: if hint_type = default / random_hint()
-    #       handle if none of the random hints work- print "Sorry, no more hints are available for this riddle."
-
-    #TODO: if specific hint_type = chosen_func
-    # if in disabled_hint_types in config.py then print "No hints available. Enable this hint type in settings.json first."
-    # if the hint type doesn't apply or runs out or wtv- print "Sorry, no hints are available. Please try another hint type."
-
-    return 0
+    # TODO: if a hint type runs out, the hint type func should return -1
+    #       but for random_hint should return "Sorry, no more hints are available for this riddle."
+    #       or maybe: decide if duplicate/repeated hint responses are ok bc then it'll nvr run out
 
 def random_hint(riddle_string):
     #TODO: randomly call one of the hint funcions, active ones only 
@@ -65,6 +54,9 @@ def random_hint(riddle_string):
     # if the functions return -1, then try another random function - bc this will mean that hint type is not available for this riddle
 
     # maybe take difficulty param, and only call random hints belonging to set difficulty. or if not, then allow toggle of hard weird hints off
+
+    # TODO: handle if none of the random hints work- print "Sorry, no more hints are available for this riddle."
+    # TODO: make it so where each hint can only be used once in a session, or set the ones that shouldn't be repeated
     return 0
 
 def prewritten_hint(hints_list):
@@ -152,3 +144,59 @@ def synonymsalad_hint(riddle_string):
     Ex. "Think of an answer similar to: Hoofprints"
     """
     return 0
+
+HINT_TYPE_OPTIONS = {
+    "auto": random_hint,
+    "random_hint": random_hint,
+    "prewritten_hint": prewritten_hint,
+    "wordlength_hint": wordlength_hint,
+    "firstletters_hint": firstletters_hint,
+    "revealrandom_hint": revealrandom_hint,
+    "wordscramble_hint": wordscramble_hint,
+    "revealvowels_hint": revealvowels_hint,
+    "soundsalad_hint": soundsalad_hint,
+    "emoji_hint": emoji_hint,
+    "binary_hint": binary_hint,
+    "morse_hint": morse_hint,
+    "synonymsalad_hint": synonymsalad_hint
+}
+
+def get_hint(riddle_id, hint_type="auto"):
+    """
+    Generates a single hint for a riddle.
+    """
+
+    hints_list = riddle_id.get("hints")
+    solution = riddle_id.get("answer")
+
+    hint_func = HINT_TYPE_OPTIONS.get(str(hint_type))
+
+    # if chosen hint_type is disabled
+    disabled_hint_types = settings.get("disabled_hint_types")
+    if hint_func in disabled_hint_types:
+        print("Sorry, no hints are available. Please try another hint type.")
+        return 1
+
+    if hint_type == "prewritten_text":
+        result = hint_func(hints_list)
+    else:
+        result = hint_func(solution)
+    
+    if result == -1: # only specific hint type funcs can return -1, random_hint has a diff handling
+        return "Sorry, no more hints are avaiable. Please try another hint type."
+    else:
+        pass
+
+    # TODO: how to ensure a hint isn't printed twice
+
+    return result
+
+# cli wld b like user calles gethint() repeatedly until they're told there's no more 
+
+
+def get_hints(riddle_id, hint_type="auto", limit=10):
+    """
+    Generates a list of hints, up to specified limit. The limit is 10 by default.
+    """
+    hints_list = [get_hint(riddle_id, hint_type) for _ in range(limit)]
+    return hints_list
