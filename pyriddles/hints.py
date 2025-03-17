@@ -48,7 +48,7 @@ riddles = {
     #       but for random_hint should return "Sorry, no more hints are available for this riddle."
     #       or maybe: decide if duplicate/repeated hint responses are ok bc then it'll nvr run out
 
-def random_hint(riddle_string):
+def random_hint(solution):
     #TODO: randomly call one of the hint funcions, active ones only 
     # so if hint_func not in disabled_hint_types from config.py...
 
@@ -75,46 +75,64 @@ def prewritten_hint(hints_list):
 
 #TODO: maybe: option to toggle hintdescriptions when the answer is printed vs just priting the hint straight up?
 
-def wordlength_hint(riddle_string):
+def wordlength_hint(solution):
     """
     A function to generate a hint that displays the number of letters in the solution phrase.
     Ex. "The answer is n letters long."
     """
-    wordlength = len(riddle_string.replace(" ", ""))
+    wordlength = len(solution.replace(" ", ""))
     return print("The solution is "+str(wordlength)+" letters long.")
 
-def firstletters_hint(riddle_string):
+def firstletters_hint(solution):
     """
     A function to generate a hint that displays the first letter for every word of the solution phrase.
     Ex. "The first letter(s) of the solution is: F."
     """
-    words = riddle_string.split()
+    words = solution.split()
     firstletters = [word[0] for word in words if word]
-    
+
     return print('The first letter(s) of the solution is: ' + ', '.join(firstletters))
 
-def revealrandom_hint(riddle_string):
+def revealrandom_hint(solution):
     """
     A function to generate a hint that reveals random letters of the solution phrase.
     Ex. "Here are some letters revealed: _oo_st_p_"
     """
-    return 0
+    words = solution.split()
 
-def wordscramble_hint(riddle_string):
+    for word in words:
+        word_index = words.index(word)
+        tempchars = list(word)
+
+        limit = int(len(word)/2) 
+
+        # generate n random indexes btwn 0 and wordlen, n is the limit
+        rand_indexes = [ random.randint(0,(len(word)-1)) for _ in range(limit)]
+
+        # update chars in tempwords list at the random indexes to be "_"
+        for x in rand_indexes:
+            tempchars[x] = "_"
+
+        word = ''.join(tempchars) # rejoin chars to be a word
+        words.insert(word_index, word) # insert updated word at same index
+        
+    return print("Here are some letters revealed: " + ' '.join(words))
+
+def wordscramble_hint(solution):
     """
     A function to generate a hint that scrambles the letters of the solution phrase.
     Ex. "Here are the letters scrambled: otosFpse"
     """
     return 0
 
-def revealvowels_hint(riddle_string):
+def revealvowels_hint(solution):
     """
     A function to generate a hint that reveals all the vowels of the solution phrase.
     Ex. "Here are the vowels revealed: _oo___e__"
     """
     return 0
 
-def soundsalad_hint(riddle_string):
+def soundsalad_hint(solution):
     """
     A function to generate a hint that generates a rhyming word for each word in the solution phrase.
     Ex. "The answer sounds like: Quadriceps"
@@ -122,7 +140,7 @@ def soundsalad_hint(riddle_string):
     #TODO: exclude stopwords
     return 0
 
-def emoji_hint(riddle_string):
+def emoji_hint(solution):
     """
     A function to generate a hint that generates an emoji for every word in the solution phrase.
     Ex. "Here's the answer in emojis: 👣"
@@ -130,21 +148,21 @@ def emoji_hint(riddle_string):
     
     return 0
 
-def binary_hint(riddle_string):
+def binary_hint(solution):
     """
     A function to generate a hint that generates the solution phrase in binary code.
     Ex. "Here is the answer in binary code: 01000110 01101111 01101111 01110100 01110000 01110010 01101001 01101110 01110100 01110011"
     """
     return 0
 
-def morse_hint(riddle_string):
+def morse_hint(solution):
     """
     A function to generate a hint that generates the solution phrase in binary code.
     Ex. "Here is the answer in morse code: ..-. --- --- - .--. .-. .. -. - ..."
     """
     return 0
 
-def synonymsalad_hint(riddle_string):
+def synonymsalad_hint(solution):
     """
     A function to generate a hint that generates a synonym for each word in the solution phrase.
     Ex. "Think of an answer similar to: Hoofprints"
