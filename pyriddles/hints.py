@@ -7,7 +7,9 @@ from morse3 import Morse
 import pronouncing
 from nltk.corpus import wordnet
 from nltk.stem import WordNetLemmatizer
-import warnings
+import logging
+
+logging.basicConfig(filename="error.log", level=logging.ERROR)
 
 lemmatizer = WordNetLemmatizer()
 
@@ -35,7 +37,7 @@ def random_hint(answer, hints_list):
 
             return hint
         except Exception as e:
-            print(f"Error with {chosen_func.__name__}: {e}. Retrying...") #retry if any errors occur in other funcs
+            logging.error(f"Error with {chosen_func.__name__}: {e}. Retrying...") #retry if any errors occur in other funcs
         
         attempts += 1
 
@@ -65,7 +67,7 @@ def firstletters_hint(answer):
     words = answer.split()
     firstletters = [word[0] for word in words if word]
 
-    return print('The first letter(s) of the answer is: ' + ', '.join(firstletters))
+    return 'The first letter(s) of the answer is: ' + ', '.join(firstletters)
 
 def revealrandom_hint(answer):
     """
@@ -89,7 +91,7 @@ def revealrandom_hint(answer):
         word = ''.join(tempchars) # rejoin chars to be a word
         words[i] = word # update word at same index
 
-    return print("Here are some letters revealed: " + ' '.join(words))
+    return "Here are some letters revealed: " + ' '.join(words)
 
 def wordscramble_hint(answer):
     """
@@ -106,14 +108,14 @@ def wordscramble_hint(answer):
             random.shuffle(tempchars) 
             shuffled_word = ''.join(tempchars)
         words[i] = shuffled_word # update word at same index
-    return print("Here are the letters scrambled: " + ' '.join(words))
+    return "Here are the letters scrambled: " + ' '.join(words)
 
 def revealvowels_hint(answer):
     """
     A function to generate a hint that reveals all the vowels of the answer phrase.
     Ex. "Here are the vowels revealed: _oo___e__"
     """
-    return print ("Here are the vowels revealed: "+ re.sub(r'[^aeiouAEIOU\s]', '_', answer)) # regex replace all except vowels with "_"
+    return "Here are the vowels revealed: "+ re.sub(r'[^aeiouAEIOU\s]', '_', answer) # regex replace all except vowels with "_"
 
 def soundsalad_hint(answer):
     """
@@ -127,21 +129,21 @@ def soundsalad_hint(answer):
             soundsalad.append(random.choice(rhymes))
         else: # if no rhymes
             soundsalad.append(word) # append word as is
-    return print("The answer sounds like: " + ' '.join(soundsalad))
+    return "The answer sounds like: " + ' '.join(soundsalad)
 
 def binary_hint(answer):
     """
     A function to generate a hint that generates the answer phrase in binary code.
     Ex. "Here is the answer in binary code: 01000110 01101111 01101111 01110100 01110000 01110010 01101001 01101110 01110100 01110011"
     """
-    return print("Here is the answer in binary code: " + ' '.join(format(ord(_), '08b') for _ in answer))
+    return "Here is the answer in binary code: " + ' '.join(format(ord(_), '08b') for _ in answer)
 
 def morse_hint(answer):
     """
     A function to generate a hint that generates the answer phrase in binary code.
     Ex. "Here is the answer in morse code: ..-. --- --- - .--. .-. .. -. - ..."
     """
-    return print("Here is the answer in morse code: "+ Morse(answer).stringToMorse())
+    return "Here is the answer in morse code: "+ Morse(answer).stringToMorse()
 
 def synonymsalad_hint(answer):
     """
@@ -157,7 +159,7 @@ def synonymsalad_hint(answer):
             synonymsalad.append(random.choice(synonym_words))
         else:
             synonymsalad.append("[?]")
-    return print("Here's a synonym swap to guide you: " + ' '.join(synonymsalad))
+    return "Here's a synonym swap to guide you: " + ' '.join(synonymsalad)
 
 HINT_TYPE_OPTIONS = {
     "auto": random_hint,
@@ -210,5 +212,5 @@ def get_hints(riddle_id, hint_type="auto", limit=10):
     hints_list = [get_hint(riddle_id, hint_type) for _ in range(limit)]
     return hints_list
 
-#get_hint(RIDDLES.get(4), "soundsalad_hint")
-# get_hints(RIDDLES.get(4), "auto")
+print(get_hint(RIDDLES.get(4), "soundsalad_hint"))
+# print(get_hints(RIDDLES.get(4), "auto"))
