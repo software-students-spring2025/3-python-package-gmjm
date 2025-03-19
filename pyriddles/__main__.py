@@ -1,4 +1,6 @@
+from pyriddles.config import RIDDLES
 import pyriddles.hints as hints
+
 
 def get_riddle():
     riddle_id = 0
@@ -13,6 +15,12 @@ def get_riddle():
         else:
             print("That wasn't a number! Please enter a number!")
     return riddle_id
+
+def get_answer(riddle_id):
+    riddle = RIDDLES.get(riddle_id)
+    if riddle:
+        return riddle["answer"]
+    return "Riddle not found."
 
 
 def main():

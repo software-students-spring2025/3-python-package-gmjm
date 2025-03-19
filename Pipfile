@@ -9,8 +9,11 @@ emoji = "*"
 pronouncing = "*"
 nltk = "*"
 setuptools = "*"
+build = "*"
 
 [dev-packages]
+build = "*"
+twine = "*"
 
 [requires]
 python_version = "3.13"
