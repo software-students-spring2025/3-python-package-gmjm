@@ -1,4 +1,4 @@
-# this will be the file for the hints function
+# this is the main file for the four methods
 import pyriddles as pr
 from pyriddles.config import load_settings
 import random
@@ -14,23 +14,23 @@ lemmatizer = WordNetLemmatizer()
 
 settings = load_settings()
 
-#TODO: logic for getting/parsing riddles whether by ID or otherwise, for now will use fake data
-
 riddles = {
     1: {
         "riddle": "What has keys but can't open locks?",
         "solution": "A piano",
         "hints": [
             "It's a musical instrument.",
-            "It plays melodies, not unlocks doors.",
-            "You press my keys to make sound."
+            "Some of my keys are white, others black.",
+            "I form melodies, not unlock doors.",
+            "My keys are pressed, not turned."
         ]
     },
     2: {
         "riddle": "The more you take, the more you leave behind. What am I?",
         "solution": "Footsteps",
         "hints": [
-            "Think about movement and leaving a trail."
+            "They are momentarily visible in the sand",
+            "The size of what you leave will change throughout your life"
         ] 
     },
     3: {
@@ -49,9 +49,14 @@ riddles = {
     5: {
         "riddle": "What can fill a room but takes up no space?",
         "solution": "Light",
-        "hints": [] #empty list
+        "hints": [
+            "Sometimes a wave, sometimes a particle",
+            "An easy way to brighten any day",
+        ] 
     }
 }
+
+
 
 
 def random_hint(solution, hints_list):
