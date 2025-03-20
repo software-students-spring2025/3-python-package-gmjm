@@ -14,6 +14,8 @@ lemmatizer = WordNetLemmatizer()
 
 settings = load_settings()
 
+# HELPER FUNCTIONS START HERE
+
 def random_hint(answer, hints_list):
     """
     A function to randomly generate a hint from any of the existing functions.
@@ -165,6 +167,9 @@ def synonymsalad_hint(answer):
             synonymsalad.append("[?]")
     return "Here's a synonym swap to guide you: " + ' '.join(synonymsalad)
 
+
+# MAIN FUNCTIONS STARTS HERE
+
 HINT_TYPE_OPTIONS = {
     "auto": random_hint,
     "random_hint": random_hint,
@@ -220,6 +225,3 @@ def get_hints(riddle_id, hint_type="auto", limit=10):
     """
     hints_list = [get_hint(riddle_id, hint_type) for _ in range(limit)]
     return hints_list
-
-# print(get_hint(RIDDLES.get(4), "soundsalad_hint"))
-# print(get_hints(RIDDLES.get(4), "auto"))
