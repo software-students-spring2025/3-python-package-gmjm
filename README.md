@@ -11,11 +11,11 @@
 
 1. Run the following command in terminal:
    ```bash
-   pip install PyRiddless
+   pip install pyriddles
    ```
 2. Confirm proper installation:
    ```bash
-   pip show PyRiddless
+   pip show pyriddles
    ```
 3. Next, import the desired functions (example usage below):
    ```python
