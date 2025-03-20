@@ -213,5 +213,5 @@ def get_hints(riddle_id, hint_type="auto", limit=10):
     hints_list = [get_hint(riddle_id, hint_type) for _ in range(limit)]
     return hints_list
 
-print(get_hint(RIDDLES.get(4), "soundsalad_hint"))
+# print(get_hint(RIDDLES.get(4), "soundsalad_hint"))
 # print(get_hints(RIDDLES.get(4), "auto"))
