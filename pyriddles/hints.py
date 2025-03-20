@@ -1,5 +1,4 @@
 # this is the main file for the four methods
-import pyriddles as pr
 from pyriddles.config import load_settings, RIDDLES
 import random
 import re
@@ -33,7 +32,9 @@ def random_hint(answer, hints_list):
 
             # if the hint is same as answer- try again
             if hint == answer:
-                raise ValueError("Generated hint is the same as the answer. Retrying...")
+                logging.error(f"Generated hint is the same as the answer. Retrying...")
+                attempts += 1
+                continue
 
             return hint
         except Exception as e:
