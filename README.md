@@ -1,21 +1,112 @@
 # Python Package Exercise
-
-Replace the contents of the [README.md](./README.md) file with a beautifully-formatted Markdown file including
-
-- a plain-language **description** of your project, including:
-- a [badge](https://docs.github.com/en/actions/monitoring-and-troubleshooting-workflows/adding-a-workflow-status-badge) at the top of the `README.md` file showing the result of the latest build/test workflow run.
-- a link to your package's page on the PyPI website.
-- how a developer who wants to import your project into their own code can do so - include documentation and code examples for all functions in your package and a link to an example Python program that uses each of them.
-- how a developer who wants to contribute to your project can set up the virtual environment, install dependencies, and build and test your package for themselves.
-- the names of all teammates as links to their GitHub profiles in the `README.md` file.
-- instructions for how to configure and run all parts of your project for any developer on any platform - these instructions must work!
-- instructions for how to set up any environment variables and import any starter data into the database, as necessary, for the system to operate correctly when run.
-- if there are any "secret" configuration files, such as `.env` or similar files, that are not included in the version control repository, examples of these files, such as `env.example`, with dummy data must be included in the repository and exact instructions for how to create the proper configuration files and what their contents should be must be supplied to the course admins by the due date.
-
+[![Build Status](https://github.com/software-students-spring2025/3-python-package-gmjm/actions/workflows/build.yaml/badge.svg)](https://github.com/software-students-spring2025/3-python-package-gmjm/actions)
 
 ## Plain-language Description 
 
-- PyRiddles is a simple and fun python package for those who want to enjoy a few riddles! Users of the package would make use of it by accessing four main functions of 
+- PyRiddles is a fun and interactive python package for those who want to enjoy a few riddles! With a range of difficulty levels and hints to help you along the way, PyRiddles is perfect for anyone looking to exercise their brain and have a good time. Whether you're a seasoned puzzle solver or just looking for a fun way to pass the time, PyRiddles is the perfect package for you.
+
+## [Link to Package on PyPi Website](https://pypi.org/project/pyriddle/)
+
+## How to Import
+
+1. Run the following command in terminal:
+   ```bash
+   pip install PyRiddless
+   ```
+2. Confirm proper installation:
+   ```bash
+   pip show PyRiddless
+   ```
+3. Next, import the desired functions (example usage below):
+   ```python
+   from pyriddles import arbitrary_riddle, get_answer, ...
+   ```
+
+## Example Usage of Key Functions:
+
+- `arbitrary_riddle`: 
+  - Parameters:
+    - None 
+  - Returns:
+    - A random riddle_id to be used in other methods
+  - Example: 
+    - ```python
+      # Demonstrate arbitrary_riddle
+      riddle_id = arbitrary_riddle()
+      print(f"Random riddle ID: {riddle_id}")
+      ```
+
+- `get_riddle_by_difficulty`: 
+  - Parameters:
+    - A difficulty (of 'easy', 'medium', or 'hard')
+  - Returns:
+    - A random riddle based on difficulty
+  -  Example:
+     -  ```python
+        # Demonstrate proper usage of get_riddle_by_difficulty
+        print(get_riddle_by_difficulty("easy"))
+
+        # Demonstrate improper usage of get_riddle_by_difficulty
+        print(get_riddle_by_difficulty("extra hard"))
+        ```
+- `list_difficulties`:
+  - Parameters:
+    - None
+  - Returns:
+    - A list of available difficulties
+  - Example:
+    - ```python
+      #Demonstrate list_difficulties
+      print(list_difficulties())
+      ```
+
+
+- `get_answer`: 
+  - Parameters:
+    - riddle_id : The id number for a riddle in `config.py`
+  - Returns:
+    - A boolean value depending on the verity of the user's answer
+  - Example:
+    - ```python
+      #Demonstrate get_answer
+      answer = get_answer(riddle_id)
+      print(f"The answer to riddle {riddle_id} is: {answer}")
+      ```
+
+
+- `get_hint`:
+  - Parameters:
+    - riddle_id
+    - hint_type (set to auto normally)
+    - max_attempts : the maximum number of tries for a riddle
+  - Returns: A singular (usually random) hint
+  - Example:
+    - ```python
+      #Example usage of get_hint
+
+      hint = get_hint(riddle_id, "soundsalad_hint")
+      print("Generated hint (soundsalad_hint):", hint)
+
+      hint_auto = get_hint(riddle_id, "auto")
+      print("Generated hint (auto):", hint_auto)
+      ```
+
+- `get_hints`:
+  - Parameters: 
+    - riddle_id
+    - hint_type : Usually randomly selected, but can be input manually for a specific type
+    - limit : The total number of hints desired
+  - Returns: 
+    - Several hints
+  - Example:
+    ```python
+    #Example usage of get_hints
+
+    hints_list = get_hints(riddle_id, "auto", limit=5)
+    print("Generated list of hints (auto):", hints_list)
+    ```
+
+- NOTE: For a program that uses all key functions, go [here](https://github.com/software-students-spring2025/3-python-package-gmjm/blob/main/pyriddles/example_usage.py)
 
 ## Team Members
 

@@ -22,7 +22,7 @@ def random_hint(answer, hints_list):
     """
 
     function_list = [ prewritten_hint, wordlength_hint, firstletters_hint, revealrandom_hint, wordscramble_hint, revealvowels_hint, 
-                     soundsalad_hint, binary_hint, morse_hint, synonymsalad_hint ]
+                    soundsalad_hint, binary_hint, morse_hint, synonymsalad_hint ]
     
     attempts = 0
     max_attempts = 10  #prevent inf loops
@@ -225,3 +225,6 @@ def get_hints(riddle_id, hint_type="auto", limit=10):
     """
     hints_list = [get_hint(riddle_id, hint_type) for _ in range(limit)]
     return hints_list
+
+# print(get_hint(RIDDLES.get(4), "soundsalad_hint"))
+# print(get_hints(RIDDLES.get(4), "auto"))
