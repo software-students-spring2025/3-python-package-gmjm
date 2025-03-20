@@ -5,7 +5,7 @@
 
 - PyRiddles is a fun and interactive python package for those who want to enjoy a few riddles! With a range of difficulty levels and hints to help you along the way, PyRiddles is perfect for anyone looking to exercise their brain and have a good time. Whether you're a seasoned puzzle solver or just looking for a fun way to pass the time, PyRiddles is the perfect package for you.
 
-## [Link to Package on PyPi Website](https://pypi.org/project/pyriddle/)
+## [Link to Package on PyPi Website](https://pypi.org/project/pyriddles/0.0.1/)
 
 ## How to Import
 
