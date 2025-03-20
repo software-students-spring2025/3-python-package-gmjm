@@ -15,6 +15,9 @@ lemmatizer = WordNetLemmatizer()
 settings = load_settings()
 
 def random_hint(answer, hints_list):
+    """
+    A function to randomly generate a hint from any of the existing functions.
+    """
 
     function_list = [ prewritten_hint, wordlength_hint, firstletters_hint, revealrandom_hint, wordscramble_hint, revealvowels_hint, 
                      soundsalad_hint, binary_hint, morse_hint, synonymsalad_hint ]
