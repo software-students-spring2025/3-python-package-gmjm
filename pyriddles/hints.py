@@ -62,7 +62,7 @@ riddles = {
 def random_hint(solution, hints_list):
 
     function_list = [ prewritten_hint, wordlength_hint, firstletters_hint, revealrandom_hint, wordscramble_hint, revealvowels_hint, 
-                     soundsalad_hint, emoji_hint, binary_hint, morse_hint, synonymsalad_hint ]
+                    soundsalad_hint, emoji_hint, binary_hint, morse_hint, synonymsalad_hint ]
     
     # remove any disabled types
     # disabled_hint_types = settings.get("disabled_hint_types")
