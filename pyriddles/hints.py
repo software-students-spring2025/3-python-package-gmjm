@@ -1,4 +1,4 @@
-# this is the main file for the four methods
+# this file contains the get_hint() function as well as its helper functions
 from pyriddles.config import load_settings, RIDDLES
 import random
 import re
@@ -14,7 +14,12 @@ lemmatizer = WordNetLemmatizer()
 
 settings = load_settings()
 
+# HELPER FUNCTIONS START HERE
+
 def random_hint(answer, hints_list):
+    """
+    A function to randomly generate a hint from any of the existing functions.
+    """
 
     function_list = [ prewritten_hint, wordlength_hint, firstletters_hint, revealrandom_hint, wordscramble_hint, revealvowels_hint, 
                      soundsalad_hint, binary_hint, morse_hint, synonymsalad_hint ]
@@ -42,14 +47,14 @@ def random_hint(answer, hints_list):
         
         attempts += 1
 
-    return "Sorry, no valid hints available for this riddle."
+    return "Sorry, no valid hints are available for this riddle."
 
 def prewritten_hint(hints_list):
     """
     A function to randomly pick a prewritten hint from the riddles' dict.
     """
     if hints_list == []:
-        raise ValueError("No hints are avaiable for this type. Please try another hint type.")
+        raise ValueError("No hints are available for this type. Please try another hint type.")
     return random.choice(hints_list)
 
 def wordlength_hint(answer):
@@ -162,6 +167,9 @@ def synonymsalad_hint(answer):
             synonymsalad.append("[?]")
     return "Here's a synonym swap to guide you: " + ' '.join(synonymsalad)
 
+
+# MAIN FUNCTIONS STARTS HERE
+
 HINT_TYPE_OPTIONS = {
     "auto": random_hint,
     "random_hint": random_hint,
@@ -177,7 +185,7 @@ HINT_TYPE_OPTIONS = {
     "synonymsalad_hint": synonymsalad_hint
 }
 
-def get_hint(riddle_id, hint_type="auto"):
+def get_hint(riddle_id, hint_type="auto", max_attempts=10):
     """
     Generates a single hint for a riddle.
     """
@@ -190,20 +198,25 @@ def get_hint(riddle_id, hint_type="auto"):
 
     hint_func = HINT_TYPE_OPTIONS.get(str(hint_type))
 
-    if hint_type == "prewritten_hint":
-        result = hint_func(hints_list)
-    elif hint_type in ("auto", "random_hint"):
-        result = hint_func(answer, hints_list)
-    else:
-        result = hint_func(answer)
-    
-    if result == -1: 
-        return "Sorry, no more hints are avaiable for this type. Please try another hint type."
-    else:
-        pass
+    attempts = 0
 
+    while attempts < max_attempts:
+        if hint_type == "prewritten_hint":
+            result = hint_func(hints_list)
+        elif hint_type in ("auto", "random_hint"):
+            result = hint_func(answer, hints_list)
+        else:
+            result = hint_func(answer)
 
-    return result
+        # if hint same as answer
+        if result == answer:
+            attempts += 1
+            continue  # retry
+
+        return result
+
+    # if no valid hint is found after max_attempts
+    return "Sorry, no valid hints available for this riddle. Please try another hint type or riddle."
 
 
 def get_hints(riddle_id, hint_type="auto", limit=10):
@@ -212,6 +225,3 @@ def get_hints(riddle_id, hint_type="auto", limit=10):
     """
     hints_list = [get_hint(riddle_id, hint_type) for _ in range(limit)]
     return hints_list
-
-# print(get_hint(RIDDLES.get(4), "soundsalad_hint"))
-# print(get_hints(RIDDLES.get(4), "auto"))
