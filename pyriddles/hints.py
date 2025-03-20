@@ -1,14 +1,14 @@
 # this is the main file for the four methods
-import pyriddles as pr
-from pyriddles.config import load_settings
+from pyriddles.config import load_settings, RIDDLES
 import random
 import re
 from morse3 import Morse
 import pronouncing
-import emoji
 from nltk.corpus import wordnet
 from nltk.stem import WordNetLemmatizer
-import warnings
+import logging
+
+logging.basicConfig(filename="error.log", level=logging.ERROR)
 
 lemmatizer = WordNetLemmatizer()
 
@@ -64,63 +64,63 @@ def random_hint(solution, hints_list):
     function_list = [ prewritten_hint, wordlength_hint, firstletters_hint, revealrandom_hint, wordscramble_hint, revealvowels_hint, 
                     soundsalad_hint, emoji_hint, binary_hint, morse_hint, synonymsalad_hint ]
     
-    # remove any disabled types
-    # disabled_hint_types = settings.get("disabled_hint_types")
-    disabled_hint_types = []
-    for func in disabled_hint_types:
-        function_list.remove(func)
+    attempts = 0
+    max_attempts = 10  #prevent inf loops
 
-    chosen_func = random.choice(function_list)
-    if chosen_func == prewritten_hint:
-        chosen_func(hints_list)
-    else:
-        chosen_func(solution)
+    while attempts < max_attempts:
+        chosen_func = random.choice(function_list)
+        try:
+            if chosen_func == prewritten_hint:
+                hint = chosen_func(hints_list)
+            else:
+                hint = chosen_func(answer)
 
-    # handle cases where hint == solution
+            # if the hint is same as answer- try again
+            if hint == answer:
+                logging.error(f"Generated hint is the same as the answer. Retrying...")
+                attempts += 1
+                continue
 
-    # result = chosen_func(solution)
-    # if result == -1
-    # or catch any errors
-    # try a diff random func
-    return 0
+            return hint
+        except Exception as e:
+            logging.error(f"Error with {chosen_func.__name__}: {e}. Retrying...") #retry if any errors occur in other funcs
+        
+        attempts += 1
+
+    return "Sorry, no valid hints available for this riddle."
 
 def prewritten_hint(hints_list):
     """
     A function to randomly pick a prewritten hint from the riddles' dict.
     """
     if hints_list == []:
-        # raise ValueError("No hints are avaiable for this type. Please try another hint type.")
-        warnings.warn("No more hints are avaiable for this type. Please try another hint type.", UserWarning)
-        return None
-    return print(random.choice(hints_list))
+        raise ValueError("No hints are avaiable for this type. Please try another hint type.")
+    return random.choice(hints_list)
 
+def wordlength_hint(answer):
+    """
+    A function to generate a hint that displays the number of letters in the answer phrase.
+    Ex. "The answer is n letters long."
+    """
+    wordlength = len(answer.replace(" ", ""))
+    return "The answer is "+str(wordlength)+" letters long."
 
-#TODO: after testing, phase out print statements to actual return values
-
-def wordlength_hint(solution):
+def firstletters_hint(answer):
     """
-    A function to generate a hint that displays the number of letters in the solution phrase.
-    Ex. "The solution is n letters long."
+    A function to generate a hint that displays the first letter for every word of the answer phrase.
+    Ex. "The first letter(s) of the answer is: F."
     """
-    wordlength = len(solution.replace(" ", ""))
-    return print("The solution is "+str(wordlength)+" letters long.")
-
-def firstletters_hint(solution):
-    """
-    A function to generate a hint that displays the first letter for every word of the solution phrase.
-    Ex. "The first letter(s) of the solution is: F."
-    """
-    words = solution.split()
+    words = answer.split()
     firstletters = [word[0] for word in words if word]
 
-    return print('The first letter(s) of the solution is: ' + ', '.join(firstletters))
+    return 'The first letter(s) of the answer is: ' + ', '.join(firstletters)
 
-def revealrandom_hint(solution):
+def revealrandom_hint(answer):
     """
-    A function to generate a hint that reveals random letters of the solution phrase.
+    A function to generate a hint that reveals random letters of the answer phrase.
     Ex. "Here are some letters revealed: _oo_st_p_"
     """
-    words = solution.split()
+    words = answer.split()
 
     for i, word in enumerate(words):
         tempchars = list(word)
@@ -137,14 +137,14 @@ def revealrandom_hint(solution):
         word = ''.join(tempchars) # rejoin chars to be a word
         words[i] = word # update word at same index
 
-    return print("Here are some letters revealed: " + ' '.join(words))
+    return "Here are some letters revealed: " + ' '.join(words)
 
-def wordscramble_hint(solution):
+def wordscramble_hint(answer):
     """
-    A function to generate a hint that scrambles the letters of the solution phrase.
+    A function to generate a hint that scrambles the letters of the answer phrase.
     Ex. "Here are the letters scrambled: otosFpse"
     """
-    words = solution.split()
+    words = answer.split()
     for i, word in enumerate(words):
         tempchars = list(word)
         shuffled_word = word
@@ -154,58 +154,50 @@ def wordscramble_hint(solution):
             random.shuffle(tempchars) 
             shuffled_word = ''.join(tempchars)
         words[i] = shuffled_word # update word at same index
-    return print("Here are the letters scrambled: " + ' '.join(words))
+    return "Here are the letters scrambled: " + ' '.join(words)
 
-def revealvowels_hint(solution):
+def revealvowels_hint(answer):
     """
-    A function to generate a hint that reveals all the vowels of the solution phrase.
+    A function to generate a hint that reveals all the vowels of the answer phrase.
     Ex. "Here are the vowels revealed: _oo___e__"
     """
-    return print ("Here are the vowels revealed: "+ re.sub(r'[^aeiouAEIOU\s]', '_', solution)) # regex replace all except vowels with "_"
+    return "Here are the vowels revealed: "+ re.sub(r'[^aeiouAEIOU\s]', '_', answer) # regex replace all except vowels with "_"
 
-def soundsalad_hint(solution):
+def soundsalad_hint(answer):
     """
-    A function to generate a hint that generates a rhyming word for each word in the solution phrase.
-    Ex. "The solution sounds like: Quadriceps"
+    A function to generate a hint that generates a rhyming word for each word in the answer phrase.
+    Ex. "The answer sounds like: Quadriceps"
     """
     soundsalad = []
-    for word in solution.split():
+    for word in answer.split():
         rhymes = pronouncing.rhymes(word)
         if len(rhymes) > 0: #if rhymes exist
             soundsalad.append(random.choice(rhymes))
         else: # if no rhymes
             soundsalad.append(word) # append word as is
-    return print("The solution sounds like: " + ' '.join(soundsalad))
+    return "The answer sounds like: " + ' '.join(soundsalad)
 
-def emoji_hint(solution):
+def binary_hint(answer):
     """
-    A function to generate a hint that generates an emoji for every word in the solution phrase.
-    Ex. "Here's the solution in emojis: 👣"
+    A function to generate a hint that generates the answer phrase in binary code.
+    Ex. "Here is the answer in binary code: 01000110 01101111 01101111 01110100 01110000 01110010 01101001 01101110 01110100 01110011"
     """
-    
-    return 0
+    return "Here is the answer in binary code: " + ' '.join(format(ord(_), '08b') for _ in answer)
 
-def binary_hint(solution):
+def morse_hint(answer):
     """
-    A function to generate a hint that generates the solution phrase in binary code.
-    Ex. "Here is the solution in binary code: 01000110 01101111 01101111 01110100 01110000 01110010 01101001 01101110 01110100 01110011"
+    A function to generate a hint that generates the answer phrase in binary code.
+    Ex. "Here is the answer in morse code: ..-. --- --- - .--. .-. .. -. - ..."
     """
-    return print("Here is the solution in binary code: " + ' '.join(format(ord(_), '08b') for _ in solution))
+    return "Here is the answer in morse code: "+ Morse(answer).stringToMorse()
 
-def morse_hint(solution):
+def synonymsalad_hint(answer):
     """
-    A function to generate a hint that generates the solution phrase in binary code.
-    Ex. "Here is the solution in morse code: ..-. --- --- - .--. .-. .. -. - ..."
-    """
-    return print("Here is the solution in morse code: "+ Morse(solution).stringToMorse())
-
-def synonymsalad_hint(solution):
-    """
-    A function to generate a hint that generates a synonym for each word in the solution phrase.
+    A function to generate a hint that generates a synonym for each word in the answer phrase.
     Ex. "Here's a synonym swap to guide you: Hoofprints"
     """
     synonymsalad = []
-    for word in solution.split():
+    for word in answer.split():
         lemma = lemmatizer.lemmatize(word)
         synsets = wordnet.synsets(lemma)
         if synsets:
@@ -213,7 +205,7 @@ def synonymsalad_hint(solution):
             synonymsalad.append(random.choice(synonym_words))
         else:
             synonymsalad.append("[?]")
-    return print("Here's a synonym swap to guide you: " + ' '.join(synonymsalad))
+    return "Here's a synonym swap to guide you: " + ' '.join(synonymsalad)
 
 HINT_TYPE_OPTIONS = {
     "auto": random_hint,
@@ -225,7 +217,6 @@ HINT_TYPE_OPTIONS = {
     "wordscramble_hint": wordscramble_hint,
     "revealvowels_hint": revealvowels_hint,
     "soundsalad_hint": soundsalad_hint,
-    "emoji_hint": emoji_hint,
     "binary_hint": binary_hint,
     "morse_hint": morse_hint,
     "synonymsalad_hint": synonymsalad_hint
@@ -240,21 +231,16 @@ def get_hint(riddle_id, hint_type="auto"):
         riddle_id.update({"hints":[]})
 
     hints_list = riddle_id.get("hints")
-    solution = riddle_id.get("solution")
+    answer = riddle_id.get("answer")
 
     hint_func = HINT_TYPE_OPTIONS.get(str(hint_type))
-    # if chosen hint_type is disabled
-    # disabled_hint_types = settings.get("disabled_hint_types")
-    disabled_hint_types = []
-    if hint_func in disabled_hint_types:
-        raise ValueError("This hint type is disabled. Update your settings to enable it.")
 
     if hint_type == "prewritten_hint":
         result = hint_func(hints_list)
     elif hint_type in ("auto", "random_hint"):
-        result = hint_func(solution, hints_list)
+        result = hint_func(answer, hints_list)
     else:
-        result = hint_func(solution)
+        result = hint_func(answer)
     
     if result == -1: 
         return "Sorry, no more hints are avaiable for this type. Please try another hint type."
