@@ -14,7 +14,52 @@ lemmatizer = WordNetLemmatizer()
 
 settings = load_settings()
 
-def random_hint(answer, hints_list):
+riddles = {
+    1: {
+        "riddle": "What has keys but can't open locks?",
+        "solution": "A piano",
+        "hints": [
+            "It's a musical instrument.",
+            "Some of my keys are white, others black.",
+            "I form melodies, not unlock doors.",
+            "My keys are pressed, not turned."
+        ]
+    },
+    2: {
+        "riddle": "The more you take, the more you leave behind. What am I?",
+        "solution": "Footsteps",
+        "hints": [
+            "They are momentarily visible in the sand",
+            "The size of what you leave will change throughout your life"
+        ] 
+    },
+    3: {
+        "riddle": "I have cities, but no houses. I have mountains, but no trees. I have water, but no fish. What am I?",
+        "solution": "A map",
+        "hints": [
+            "It's something you use to navigate.",
+            "You might fold me up when traveling."
+        ]
+    },
+    4: {
+        "riddle": "What comes once in a minute, twice in a moment, but never in a thousand years?",
+        "solution": "The letter M",
+        # no hints field
+    },
+    5: {
+        "riddle": "What can fill a room but takes up no space?",
+        "solution": "Light",
+        "hints": [
+            "Sometimes a wave, sometimes a particle",
+            "An easy way to brighten any day",
+        ] 
+    },
+}
+
+
+
+
+def random_hint(solution, hints_list):
 
     function_list = [ prewritten_hint, wordlength_hint, firstletters_hint, revealrandom_hint, wordscramble_hint, revealvowels_hint, 
                      soundsalad_hint, binary_hint, morse_hint, synonymsalad_hint ]
@@ -213,5 +258,5 @@ def get_hints(riddle_id, hint_type="auto", limit=10):
     hints_list = [get_hint(riddle_id, hint_type) for _ in range(limit)]
     return hints_list
 
-# print(get_hint(RIDDLES.get(4), "soundsalad_hint"))
-# print(get_hints(RIDDLES.get(4), "auto"))
+# get_hint(riddles.get(4), "soundsalad_hint")
+#get_hints(riddles.get(4), "auto")
