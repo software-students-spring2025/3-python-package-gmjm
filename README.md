@@ -16,3 +16,92 @@ Replace the contents of the [README.md](./README.md) file with a beautifully-for
 ## Plain-language Description 
 
 - PyRiddles is a simple and fun python package for those who want to enjoy a few riddles! Users of the package would make use of it by accessing four main functions of 
+
+## Team Members
+
+- [Kahmeeah Obey](https://github.com/kahmeeah)
+- [Gabriella Codrington](https://github.com/gabriella-codrington)
+- [Jahleel Townsend](https://github.com/JahleelT)
+- [Matthew Ortega](https://github.com/bruhcolate)
+
+## For Developers
+
+These instructions will guide you on how to configure and run this project.
+
+### **Prerequisites**
+
+Before you begin, ensure you have the following installed:
+
+- **Python 3.9** or higher
+- **pipenv** (for dependency and virtual environment management)
+
+If you don’t have `pipenv`, install it with:
+
+```sh
+pip install pipenv
+```
+
+---
+
+### **Setting Up the Development Environment**
+
+1. Clone the repository
+
+    ```sh
+    git clone https://github.com/software-students-spring2025/3-python-package-gmjm.git
+    cd 3-python-package-gmjm
+    ```
+
+2. Set up the virtual environment and install dependencies
+
+    ```sh
+    pipenv install
+    ```
+
+3. Activate the virtual environment:
+
+    ```sh
+    pipenv shell
+    ```
+
+---
+
+### **Running the Package Locally**
+
+To execute the package code locally, use:
+
+```sh
+python -m pyriddles
+```
+
+---
+
+### **Running Tests**
+
+To ensure that all functions work correctly, you can run the tests manually using:
+
+```sh
+pytest
+```
+
+---
+
+### **Building the Package**
+
+To manually build the package into distributable artifacts:
+
+```sh
+python -m build
+```
+
+---
+
+### **CI/CD with GitHub Actions**
+
+Every time a pull request is created, GitHub Actions will:
+
+- Run the test suite
+- Build the package
+- Ensure compatibility with multiple Python versions
+
+You can check the latest test/build status via the badge at the top of this README.

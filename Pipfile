@@ -5,7 +5,8 @@ name = "pypi"
 
 [packages]
 setuptools = "*"
-nltk = "*"
+build = "*"
+pytest = "*"
 
 [dev-packages]
 build = "*"
