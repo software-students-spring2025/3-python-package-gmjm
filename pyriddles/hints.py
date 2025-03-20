@@ -53,7 +53,7 @@ riddles = {
             "Sometimes a wave, sometimes a particle",
             "An easy way to brighten any day",
         ] 
-    }
+    },
 }
 
 
@@ -273,4 +273,4 @@ def get_hints(riddle_id, hint_type="auto", limit=10):
     return hints_list
 
 # get_hint(riddles.get(4), "soundsalad_hint")
-get_hints(riddles.get(4), "auto")
+#get_hints(riddles.get(4), "auto")

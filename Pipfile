@@ -4,11 +4,8 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-morse3 = "*"
-emoji = "*"
-pronouncing = "*"
-nltk = "*"
 setuptools = "*"
+nltk = "*"
 
 [dev-packages]
 

@@ -2,7 +2,7 @@ import pyriddles.hints as hints
 
 def get_riddle():
     riddle_id = 0
-    while riddle_id < 1 or riddle_id > 5:
+    while not (1 <= riddle_id <= 5):
         answer = input("Choose a number from 1-5 (inclusive): ")
         if answer.isdigit():
             riddle_id = int(answer)
@@ -16,21 +16,23 @@ def get_riddle():
 
 
 def main():
-    riddles = hints.get_riddles()
+    riddles = hints.riddles
       
     riddle_id = get_riddle()  
 
     riddle_data = riddles[riddle_id]  
     print(f"Riddle {riddle_id}: {riddle_data['riddle']}")
     
-    user_answer = input("Your answer: ")
+    while True:
+      user_answer = input("Your answer: ")
 
-    if user_answer.lower() == riddle_data['solution'].lower():
-        print("Correct!")
-    else:
-        print("Incorrect. Here's a hint:")
-        hints.get_hint(riddle_data)  
+      if user_answer.lower() == riddle_data['solution'].lower():
+          print("Correct!")
+          break
+      else:
+          print("Incorrect. Here's a hint:")
+          hints.get_hint(riddle_data)  
     
 
-    if __name__ == "__main__":
-      main()
+if __name__ == "__main__":
+  main()
