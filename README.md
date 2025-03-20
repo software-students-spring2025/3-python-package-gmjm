@@ -99,6 +99,22 @@ python -m build
 
 ---
 
+### Importing the Package
+To import the entire package for use in your code, add the following line to the top of your file
+
+    import pyriddles
+
+If you only want to import certain functions, add the following line to the top of your file:
+
+    from pyriddles import func1, func2...
+
+---
+
+### Code Examples
+For more information on how the functuons in this package should work, see this [code file](pyriddles\use_difficulty.py).
+
+---
+
 ### **CI/CD with GitHub Actions**
 
 Every time a pull request is created, GitHub Actions will:
