@@ -8,9 +8,9 @@ description = "A python riddles package."
 version = "0.0.1"
 authors = [
   { name="Kahmeeah Obey", email="kahmeeah@nyu.edu" },
-  { name="Member 2", email="foo.barstein@onepotcooking.com" },
-  { name="Member 3", email="foo.barstein@onepotcooking.com" },
-  { name="Member 4", email="foo.barstein@onepotcooking.com" }
+  { name="Gabriella Codrington", email="gc1855@nyu.edu" },
+  { name="Jahleel Townsend", email="jlt9287@nyu.edu" },
+  { name="Matthew Ortega", email="mro9388@nyu.edu" }
 ]
 license = { file = "LICENSE" }
 readme = "README.md"

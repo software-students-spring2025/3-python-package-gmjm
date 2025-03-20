@@ -3,7 +3,6 @@
 Replace the contents of the [README.md](./README.md) file with a beautifully-formatted Markdown file including
 
 - a [badge](https://docs.github.com/en/actions/monitoring-and-troubleshooting-workflows/adding-a-workflow-status-badge) at the top of the `README.md` file showing the result of the latest build/test workflow run.
-- a link to your package's page on the PyPI website.
 - how a developer who wants to import your project into their own code can do so - include documentation and code examples for all functions in your package and a link to an example Python program that uses each of them.
 - how a developer who wants to contribute to your project can set up the virtual environment, install dependencies, and build and test your package for themselves.
 - the names of all teammates as links to their GitHub profiles in the `README.md` file.
@@ -17,3 +16,95 @@ Replace the contents of the [README.md](./README.md) file with a beautifully-for
 - PyRiddles is a fun and interactive python package for those who want to enjoy a few riddles! With a range of difficulty levels and hints to help you along the way, PyRiddles is perfect for anyone looking to exercise their brain and have a good time. Whether you're a seasoned puzzle solver or just looking for a fun way to pass the time, PyRiddles is the perfect package for you.
 
 ## Badge:
+
+
+## [Link to Package on PyPi Website](https://pypi.org/project/pyriddle/)
+
+## Team Members
+
+- [Kahmeeah Obey](https://github.com/kahmeeah)
+- [Gabriella Codrington](https://github.com/gabriella-codrington)
+- [Jahleel Townsend](https://github.com/JahleelT)
+- [Matthew Ortega](https://github.com/bruhcolate)
+
+## For Developers
+
+These instructions will guide you on how to configure and run this project.
+
+### **Prerequisites**
+
+Before you begin, ensure you have the following installed:
+
+- **Python 3.9** or higher
+- **pipenv** (for dependency and virtual environment management)
+
+If you don’t have `pipenv`, install it with:
+
+```sh
+pip install pipenv
+```
+
+---
+
+### **Setting Up the Development Environment**
+
+1. Clone the repository
+
+    ```sh
+    git clone https://github.com/software-students-spring2025/3-python-package-gmjm.git
+    cd 3-python-package-gmjm
+    ```
+
+2. Set up the virtual environment and install dependencies
+
+    ```sh
+    pipenv install
+    ```
+
+3. Activate the virtual environment:
+
+    ```sh
+    pipenv shell
+    ```
+
+---
+
+### **Running the Package Locally**
+
+To execute the package code locally, use:
+
+```sh
+python -m pyriddles
+```
+
+---
+
+### **Running Tests**
+
+To ensure that all functions work correctly, you can run the tests manually using:
+
+```sh
+pytest
+```
+
+---
+
+### **Building the Package**
+
+To manually build the package into distributable artifacts:
+
+```sh
+python -m build
+```
+
+---
+
+### **CI/CD with GitHub Actions**
+
+Every time a pull request is created, GitHub Actions will:
+
+- Run the test suite
+- Build the package
+- Ensure compatibility with multiple Python versions
+
+You can check the latest test/build status via the badge at the top of this README.
