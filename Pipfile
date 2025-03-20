@@ -10,6 +10,7 @@ pronouncing = "*"
 nltk = "*"
 setuptools = "*"
 build = "*"
+pytest = "*"
 
 [dev-packages]
 build = "*"
