@@ -2,7 +2,6 @@
 
 Replace the contents of the [README.md](./README.md) file with a beautifully-formatted Markdown file including
 
-- a plain-language **description** of your project, including:
 - a [badge](https://docs.github.com/en/actions/monitoring-and-troubleshooting-workflows/adding-a-workflow-status-badge) at the top of the `README.md` file showing the result of the latest build/test workflow run.
 - a link to your package's page on the PyPI website.
 - how a developer who wants to import your project into their own code can do so - include documentation and code examples for all functions in your package and a link to an example Python program that uses each of them.
@@ -15,4 +14,6 @@ Replace the contents of the [README.md](./README.md) file with a beautifully-for
 
 ## Plain-language Description 
 
-- PyRiddles is a simple and fun python package for those who want to enjoy a few riddles! Users of the package would make use of it by accessing four main functions of 
+- PyRiddles is a fun and interactive python package for those who want to enjoy a few riddles! With a range of difficulty levels and hints to help you along the way, PyRiddles is perfect for anyone looking to exercise their brain and have a good time. Whether you're a seasoned puzzle solver or just looking for a fun way to pass the time, PyRiddles is the perfect package for you.
+
+## Badge:
